@@ -1,0 +1,42 @@
+/* Style the tab */
+.tab {
+	width: auto;
+	overflow: hidden;
+	border: 1px solid #CCCCCC;
+	background-color: white;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tablinks {
+	display: inline-block;
+	background-color: #dddddd;
+	float: left;
+	width: 150px; 
+	border: none;
+	outline: none;
+	cursor: pointer;
+	text-align: center;
+	font-size: 20px;
+}
+
+/* Change background color of buttons on hover */
+.tablinks:hover {
+	background-color: #ffffff;
+}
+
+/* Create an active/current tablink class */
+div a .active {
+	background-color: #ffffff;
+}
+
+/* Style the tab content */
+.tabcontent {
+	display: box;
+	padding: 6px 12px;
+	border: 1px solid #ccc;
+	border-top: none;
+}
+
+.search_result {
+	width = 100%;
+}
