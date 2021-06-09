@@ -299,9 +299,10 @@ switch($route->getParameter(1)){
 			$condition = "all";
 		}
 		if(isset($_POST['cancel_order'])) {
-			if(isset($_POST['OID'])) {
-				$order = Database::get()->execute("SELECT * FROM mask_order WHERE creator_UID = :UID AND OID = :OID", array(":UID" => $_SESSION['UID'], ":OID" => $_POST['OID']))[0];
+			if(isset($_POST['COID'])) {
+				$order = Database::get()->execute("SELECT * FROM mask_order WHERE creator_UID = :UID AND OID = :OID", array(":UID" => $_SESSION['UID'], ":OID" => $_POST['COID']));
 				if(!empty($order)) {
+					$order = $order[0];
 					$time=date("Y-m-d H:i:s");
 					Database::get()->execute("UPDATE mask_order SET status=\"canceled\", finish_UID=:fUID, end_time=:time WHERE OID = :OID", array(":fUID"=>$_SESSION['UID'], ":time"=>$time, ":OID"=>$order['OID']));
 					Database::get()->execute("UPDATE store SET amount = amount + :amount WHERE SID = :SID", array(":amount"=>$order['amount'], ":SID"=>$order['SID']));
@@ -328,9 +329,10 @@ switch($route->getParameter(1)){
 			$shop_condition = "all";
 		}
 		if(isset($_POST['cancel_order'])) {
-			if(isset($_POST['OID'])) {
-				$order = Database::get()->execute("SELECT * FROM mask_order WHERE OID = :OID and SID in (SELECT distinct store.SID FROM staff join store WHERE staff.UID=:UID and staff.SID=store.SID or store.UID=:sUID)", array(":OID" => $_POST['OID'], ":UID"=>$_SESSION['UID'], ":sUID"=>$_SESSION['UID']))[0];
+			if(isset($_POST['COID'])) {
+				$order = Database::get()->execute("SELECT * FROM mask_order WHERE OID = :OID and SID in (SELECT distinct store.SID FROM staff join store WHERE staff.UID=:UID and staff.SID=store.SID or store.UID=:sUID)", array(":OID" => $_POST['COID'], ":UID"=>$_SESSION['UID'], ":sUID"=>$_SESSION['UID']));
 				if(!empty($order)) {
+					$order = $order[0];
 					$time=date("Y-m-d H:i:s");
 					Database::get()->execute("UPDATE mask_order SET status=\"canceled\", finish_UID=:fUID, end_time=:time WHERE OID=:OID", array(":fUID"=>$_SESSION['UID'], ":time"=>$time, ":OID"=>$order['OID']));
 					Database::get()->execute("UPDATE store SET amount = amount + :amount WHERE SID = :SID", array(":amount"=>$order['amount'], ":SID"=>$order['SID']));
@@ -340,9 +342,10 @@ switch($route->getParameter(1)){
 			}
 		}
 		if(isset($_POST['finish_order'])) {
-			if(isset($_POST['OID'])) {
-				$order = Database::get()->execute("SELECT * FROM mask_order WHERE OID = :OID and SID in (SELECT distinct store.SID FROM staff join store WHERE staff.UID=:UID and staff.SID=store.SID or store.UID=:sUID)", array(":OID" => $_POST['OID'], ":UID"=>$_SESSION['UID'], ":sUID"=>$_SESSION['UID']))[0];
+			if(isset($_POST['FOID'])) {
+				$order = Database::get()->execute("SELECT * FROM mask_order WHERE OID = :OID and SID in (SELECT distinct store.SID FROM staff join store WHERE staff.UID=:UID and staff.SID=store.SID or store.UID=:sUID)", array(":OID" => $_POST['FOID'], ":UID"=>$_SESSION['UID'], ":sUID"=>$_SESSION['UID']));
 				if(!empty($order)) {
+					$order = $order[0];
 					$time=date("Y-m-d H:i:s");
 					Database::get()->execute("UPDATE mask_order SET status=\"finished\", finish_UID=:fUID, end_time=:time WHERE OID=:OID", array(":fUID"=>$_SESSION['UID'], ":time"=>$time, ":OID"=>$order['OID']));
 				} else {
@@ -490,9 +493,9 @@ switch($route->getParameter(1)){
   break;
 
   default:
-
-    include('view/header/default.php'); // 載入共用的頁首
-    include('view/body/login.php'); // 載入登入用的頁面
-    include('view/footer/default.php'); // 載入共用的頁尾
+	header('Location: login');
+    // include('view/header/default.php'); // 載入共用的頁首
+    // include('view/body/login.php'); // 載入登入用的頁面
+    // include('view/footer/default.php'); // 載入共用的頁尾
   break;
 }

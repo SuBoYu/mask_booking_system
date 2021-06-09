@@ -40,14 +40,18 @@
 					<hr>
 					<div>
 						<?php
+							if(isset($error['delete_order_error'])) {
+								echo "<script>alert(\"${error['delete_order_error']}\")</script>";	
+								echo '<p class="bg-danger">'.$error['delete_order_error'].'</p>';
+							} else if(isset($error['finish_order_error'])) {
+								echo "<script>alert(\"${error['finish_order_error']}\")</script>";	
+								echo '<p class="bg-danger">'.$error['finish_order_error'].'</p>';
+							}
 							if(!strcmp($condition, "all")) {
 								$myorder = Database::get()->execute("SELECT OID, status, create_time, end_time, name, o.price, o.amount FROM mask_order as o join store as s WHERE creator_UID = ${_SESSION['UID']} and o.SID = s.SID", []);
 							} else {
 								$myorder = Database::get()->execute("SELECT OID, status, create_time, end_time, name, o.price, o.amount FROM mask_order as o join store as s WHERE creator_UID = ${_SESSION['UID']} and o.SID = s.SID and status = :condition", array(":condition"=> $condition));
 								// Database::get()->execute("INSERT INTO staff (UID, SID) VALUES(:EMPID, " . $store_info['SID'] . ")", array(":EMPID" => $empID));
-							}
-							if(isset($error['delete_order_error'])) {
-								echo '<p class="bg-danger">'.$error['delete_order_error'].'</p>';
 							}
 							echo "<br>";
 							echo "<table class='table'> 
@@ -64,7 +68,7 @@
 								echo "<form role='form' method='post' action='' autocomplete='off'>";								
 								echo "<tr><td>" . $order['OID'] . "</td><td>" . $order['status'] . "</td><td>" . $order['create_time'] . "</td><td>" . $order['end_time'] . "</td><td>" . $order['name'] . "</td><td>\$" . $order['price']*$order['amount'] . "(" . $order['amount'] . "*\$" . $order['price'] . ")</td><td>";
 								if($order['status'] == "unfinished") {
-									echo "<input type='hidden' name='OID' value='" . $order['OID'] . "'>" . "<input type='submit' class='btn btn-primary btn-block btn-lg'  name='cancel_order' value='cancel' style='background-color:red;'>";
+									echo "<input type='hidden' name='COID' value='" . $order['OID'] . "'>" . "<input type='submit' class='btn btn-primary btn-block btn-lg'  name='cancel_order' value='cancel' style='background-color:red;'>";
 								}
 								echo "</td></tr>";
 								echo "</form>";
